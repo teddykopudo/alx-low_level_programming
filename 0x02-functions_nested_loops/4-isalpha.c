@@ -16,5 +16,4 @@ int _isalpha(int c)
 	{
 		return (0);
 	}
-	_putchar('\n');
-
+}	
