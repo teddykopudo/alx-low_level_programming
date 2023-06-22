@@ -1,13 +1,13 @@
 #include "main.h"
 
 /**
- * print_square - function that prints a square, followed by a new line
- * @size: size in width and length
+ * print_square - that prints a square, followed by a new line
+ * @size: size of the printed square in length and width
  * Return: square made of '#'
  */
 void print_square(int size)
 {
-	int wd, ln;
+	int t, k;
 
 	if (size <= 0)
 	{
@@ -15,10 +15,10 @@ void print_square(int size)
 	}
 	else
 	{
-		for (wd = 1; wd <= size; wd++)
+		for (t = 1; t <= size; t++)
 		{
 			_putchar('#');
-			for (ln = 2; ln <= size; ln++)
+			for (k = 2; k <= size; k++)
 			{
 				_putchar('#');
 			}
