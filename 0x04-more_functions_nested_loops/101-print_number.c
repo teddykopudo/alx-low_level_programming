@@ -1,15 +1,15 @@
 #include "main.h"
 
 /**
- * print_number - a function that prints an integer
- * @n: insert num
+ * print_number - prints an integer
+ * @n: insert number
  * Return: 0
  */
 
 void print_number(int n)
 {
 	unsigned int n1, n2;
-	int i;
+	int t;
 	int aux = 1;
 
 	if (n < 0)
@@ -29,8 +29,8 @@ void print_number(int n)
 		_putchar((n2 / aux) + '0');
 		aux = aux / 10;
 
-		for (i = aux; i >= 1; i = i / 10)
-			_putchar((n2 / i) % 10 + '0');
+		for (t = aux; t >= 1; t = t / 10)
+			_putchar((n2 / t) % 10 + '0');
 	}
 	else
 		_putchar(n1 + '0');
