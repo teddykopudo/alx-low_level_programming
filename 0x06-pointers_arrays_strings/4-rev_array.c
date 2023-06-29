@@ -7,10 +7,12 @@
  *
  * Return: nothing
  */
+
 void reverse_array(int *a, int n)
 {
 	int t;
 	int k;
+
 	for (t = 0; t < n--; t++)
 	{
 		k = a[t];
