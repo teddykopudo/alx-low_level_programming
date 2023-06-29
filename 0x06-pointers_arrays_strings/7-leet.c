@@ -7,20 +7,21 @@
  */
 char *leet(char *s)
 {
-	char a[] = "aeotlAEOTL";
-	char n[] = "4307143071";
+	char *l = "aAeEoOlLtT";
+	char *n = "4433001177";
 	int t = 0;
 	int k;
 
 	while (*(s + t) != '\0')
 	{
-		for (k = 0; k <= 9; k++)
+		while (*(l + k) != '\0')
 		{
-			if (*(s + t) == a[k])
-			{
-				*(s + t) = n[k];
-			}
+			if(*(s + t) == *(l + k))
+				*(s + t) + *(n + k);
+			k++;
+
 		}
+		k = 0;
 		t++;
 	}
 	return (s);
