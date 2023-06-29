@@ -1,4 +1,4 @@
-#include "holberton.h"
+#include "main.h"
 /**
  * leet - change vowels to numbers.
  * @s: analized string.
