@@ -10,8 +10,8 @@
  */
 char *infinite_add(char *n1, char *n2, char *r, int size_r)
 {
-	int a_len = 0, b_len = 0, carry = 0, a, b, sum, biggest;
-	
+	int a_len = 0, b_len = 0, carry = 0, a, b, sum, biggest, i;
+
 	while (n1[a_len] != '\0')
 		a_len++;
 	while (n2[b_len] != '\0')
@@ -23,37 +23,28 @@ char *infinite_add(char *n1, char *n2, char *r, int size_r)
 	if ((biggest + 1) >= size_r)
 		return (0);
 	r[biggest + 1] = '\0';
-	
-	while (biggest >= 0)
+
+	for (i = 0; biggest >= 0; i++, biggest--)
 	{
-		a = (n1[a_len - 1] - '0');
-		b = (n1[b_len - 1] - '0');
-		if (a_len > 0 && b_len > 0)
-			sum = a + b + carry;
-		else if (a_len < 0 && b_len > 0)
-			sum = b + carry;
-		else if (a_len > 0 && b_len < 0)
-			sum = a + carry;
-		else
-			sum = carry;
-		
+		a = (a_len > 0) ? (n1[a_len - 1] - '0') : 0;
+		b = (b_len > 0) ? (n2[b_len - 1] - '0') : 0;
+		sum = a + b + carry;
+
 		if (sum > 9)
 		{
 			carry = sum / 10;
-			sum = (sum % 10) + '0';
+			r[i] = (sum % 10) + '0';
 		}
 		else
 		{
 			carry = 0;
-			sum = sum + '0';
+			r[i] = sum + '0';
 		}
-		r[biggest] = sum;
+
 		a_len--;
 		b_len--;
-		biggest--;
 	}
-	if (*(r) != 0)
-		return (r);
-	else
-		return (r + 1);
+
+	return (r);
 }
+
