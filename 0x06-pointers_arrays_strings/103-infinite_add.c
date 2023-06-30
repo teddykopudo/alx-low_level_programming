@@ -30,19 +30,23 @@ char *infinite_add(char *n1, char *n2, char *r, int size_r)
 		b = (b_len > 0) ? (n2[b_len - 1] - '0') : 0;
 		sum = a + b + carry;
 
-		if (sum > 9)
-		{
-			carry = sum / 10;
-			r[i] = (sum % 10) + '0';
-		}
-		else
-		{
-			carry = 0;
-			r[i] = sum + '0';
-		}
+		carry = sum / 10;
+		r[i] = (sum % 10) + '0';
 
 		a_len--;
 		b_len--;
+	}
+
+	if (carry != 0)
+	{
+		if (i >= size_r - 1)
+			return (0);
+		r[i] = carry + '0';
+		r[i + 1] = '\0';
+	}
+	else
+	{
+		r[i] = '\0';
 	}
 
 	return (r);
