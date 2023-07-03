@@ -11,12 +11,12 @@ char *_strpbrk(char *s, char *accept)
 	unsigned int i, t;
 
 	for (i = 0; *(s + i) != '\0'; i++)
-	{
-		for (t = 0; *(accept + t) != '\0'; t++)
-		{
-			if (*(s + i) == *(accept + t))
-					return (s + i);
-		}
-	}
-	return ('\0');
+{
+	for (t = 0; *(accept + t) != '\0'; t++)
+{
+	if (*(s + i) == *(accept + t))
+		return (s + i);
 }
+}
+	return ('\0');
+	}
