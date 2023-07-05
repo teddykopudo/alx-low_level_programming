@@ -1,38 +1,34 @@
 #include "main.h"
 
-int is_palindrome(char *s);
-
-int main(void)
-{
-    if (is_palindrome("radar"))
-        _putchar('1');
-    else
-        _putchar('0');
-
-    if (is_palindrome("hello"))
-        _putchar('1');
-    else
-        _putchar('0');
-
-    _putchar('\n');
-
-    return 0;
-}
+/**
+ * is_palindrome - checks if the input string for a palindrome
+ * @s: a pointer that points to the string
+ *
+ * Return: 1 if the string is a palindrome, otherwise 0
+ */
 
 int is_palindrome(char *s)
 {
-    int length = 0;
-    int i = 0;
+	int len = _strlen_recursion(s);
+	int i;
 
-    while (s[length] != '\0')
-        length++;
-
-    for (i = 0; i < length / 2; i++)
-    {
-        if (s[i] != s[length - i - 1])
-            return 0;
-    }
-
-    return 1;
+	for (i = 0; i < len / 2; i++)
+	{
+		if (s[i] != s[len - i - 1])
+			return (0);
+	}
+	return (1);
 }
-
+/**
+ * _strlen_recursion - returns the length of a string
+ * @s: the pointer that points to the string
+ *
+ * Return: the length of the string
+ */
+int _strlen_recursion(char *s)
+{
+	if (!*s)
+		return (0);
+	s++;
+	return (1 + _strlen_recursion(s));
+}
