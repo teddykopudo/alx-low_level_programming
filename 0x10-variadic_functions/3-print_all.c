@@ -3,80 +3,51 @@
 #include <stdarg.h>
 
 /**
- * print_numbers - Prints numbers, followed by a new line.
- * @separator: The string to be printed between the numbers.
- * @n: The number of numbers passed to the function.
- *
- * Description: If separator is NULL, don’t print it.
- *              Print a new line at the end of your function.
+ * op_c - Print character.
+ * @form: va_list containing the character to print.
  */
-void print_numbers(const char *separator, const unsigned int n, ...)
+void op_c(va_list form)
 {
-	va_list numbers;
-	unsigned int i;
-	int number;
-
-	if (separator == NULL)
-		separator = "";
-
-	va_start(numbers, n);
-
-	for (i = 0; i < n; i++)
-	{
-		number = va_arg(numbers, int);
-
-		if (i == n - 1) /* Check if it's the last number */
-			printf("%d", number);
-		else
-			printf("%d%s", number, separator);
-	}
-
-	printf("\n");
-	va_end(numbers);
+	printf("%c", va_arg(form, int));
 }
 
 /**
- * print_strings - Prints strings.
- * @separator: The string to be printed between the strings.
- * @n: The number of strings passed to the function.
- *
- * Description: If separator is NULL, don’t print it.
- *              If one of the strings is NULL, print (nil) instead.
- *              Print a new line at the end of your function.
+ * op_i - Print Integer.
+ * @form: va_list containing the integer to print.
  */
-void print_strings(const char *separator, const unsigned int n, ...)
+void op_i(va_list form)
 {
-	va_list strings;
-	unsigned int i;
-	char *str;
+	printf("%i", va_arg(form, int));
+}
 
-	if (separator == NULL)
-		separator = "";
+/**
+ * op_f - Print Float numbers.
+ * @form: va_list containing the float number to print.
+ */
+void op_f(va_list form)
+{
+	printf("%f", va_arg(form, double));
+}
 
-	va_start(strings, n);
+/**
+ * op_s - Print string.
+ * @form: va_list containing the string to print.
+ */
+void op_s(va_list form)
+{
+	char *str = va_arg(form, char *);
 
-	for (i = 0; i < n; i++)
-	{
-		str = va_arg(strings, char *);
-
-		if (str == NULL)
-			printf("%s(nil)", separator);
-		else
-			printf("%s%s", separator, str);
-
-		if (i != n - 1)
-			printf("%s", separator);
-	}
-
-	printf("\n");
-	va_end(strings);
+	if (str == NULL)
+		printf("(nil)");
+	else
+		printf("%s", str);
 }
 
 /**
  * print_all - Prints anything based on the format string.
  * @format: The format string containing the types of arguments.
  *
- * Description: c: char, i: integer, s: char* (if NULL, print (nil)).
+ * Description: c: char, i: integer, f: float, s: char* (if NULL, print (nil)).
  * Any other character should be ignored.
  * Print a new line at the end of your function.
  */
@@ -85,30 +56,30 @@ void print_all(const char * const format, ...)
 	va_list args;
 	unsigned int i;
 	char *separator = "";
+	f ops[] = {
+		{"c", op_c},
+		{"i", op_i},
+		{"f", op_f},
+		{"s", op_s},
+	};
 
 	va_start(args, format);
 
 	for (i = 0; format && format[i]; i++)
 	{
-		if (format[i] == 'c')
-		{
-			printf("%s%c", separator, va_arg(args, int));
-		}
-		else if (format[i] == 'i')
-		{
-			printf("%s%d", separator, va_arg(args, int));
-		}
-		else if (format[i] == 's')
-		{
-			char *str = va_arg(args, char *);
+		unsigned int j = 0;
 
-			if (str == NULL)
-				printf("%s(nil)", separator);
-			else
-				printf("%s%s", separator, str);
+		while (j < sizeof(ops) / sizeof(ops[0]))
+		{
+			if (ops[j].op[0] == format[i])
+			{
+				printf("%s", separator);
+				separator = ", ";
+				ops[j].f(args);
+				break;
+			}
+			j++;
 		}
-
-		separator = ", ";
 	}
 
 	printf("\n");
