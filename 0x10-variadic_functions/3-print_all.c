@@ -1,87 +1,87 @@
-#include <stdio.h>
 #include <stdarg.h>
+#include <stdio.h>
+#include "variadic_functions.h"
 
 /**
- * op_c - Print character.
- * @form: va_list containing the character to print.
+ * print_char - prints char
+ * @valist: valist
  */
-void op_c(va_list form)
+void print_char(va_list valist)
 {
-	printf("%c", va_arg(form, int));
+	printf("%c", va_arg(valist, int));
 }
 
 /**
- * op_i - Print Integer.
- * @form: va_list containing the integer to print.
+ * print_int - prints int
+ * @valist: valist
  */
-void op_i(va_list form)
+void print_int(va_list valist)
 {
-	printf("%i", va_arg(form, int));
+	printf("%d", va_arg(valist, int));
 }
 
 /**
- * op_f - Print Float numbers.
- * @form: va_list containing the float number to print.
+ * print_float - prints float
+ * @valist: valist
  */
-void op_f(va_list form)
+void print_float(va_list valist)
 {
-	printf("%f", va_arg(form, double));
+	printf("%f", va_arg(valist, double));
 }
 
 /**
- * op_s - Print string.
- * @form: va_list containing the string to print.
+ * print_string - prints string
+ * @valist: valist
  */
-void op_s(va_list form)
+void print_string(va_list valist)
 {
-	char *str = va_arg(form, char *);
+	char *s = va_arg(valist, char *);
 
-	if (str == NULL)
+	if (s == NULL)
+	{
 		printf("(nil)");
+	}
 	else
-		printf("%s", str);
+	{
+		printf("%s", s);
+	}
 }
 
 /**
- * print_all - Prints anything based on the format string.
- * @format: The format string containing the types of arguments.
- *
- * Description: c: char, i: integer, f: float, s: char* (if NULL, print (nil)).
- * Any other character should be ignored.
- * Print a new line at the end of your function.
+ * print_all - print varying input of ints, chars, floats, and strings
+ * @format: an array of chars signifying which data type to print
  */
 void print_all(const char * const format, ...)
 {
-	va_list args;
-	unsigned int i = 0;
 	char *separator = "";
-	void (*fptr)(va_list);
+	int i, j = 0;
+	va_list valist;
 
-	va_start(args, format);
+	datatype choice[] = {
+		{'c', print_char},
+		{'i', print_int},
+		{'f', print_float},
+		{'s', print_string},
+		{'\0', NULL}
+	};
 
-	while (format && format[i])
+	va_start(valist, format);
+	while (format != NULL && format[j] != '\0')
 	{
-		if (format[i] == 'c')
-			fptr = op_c;
-		else if (format[i] == 'i')
-			fptr = op_i;
-		else if (format[i] == 'f')
-			fptr = op_f;
-		else if (format[i] == 's')
-			fptr = op_s;
-		else
+		i = 0;
+		while (choice[i].letter != '\0')
 		{
+			if (choice[i].letter == format[j])
+			{
+				printf("%s", separator);
+				choice[i].func(valist);
+				separator = ", ";
+			}
 			i++;
-			continue;
 		}
-
-		printf("%s", separator);
-		separator = ", ";
-
-		fptr(args);
-		i++;
+		j++;
 	}
-
+	va_end(valist);
 	printf("\n");
-	va_end(args);
 }
+
