@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include "variadic_functions.h"
 #include <stdarg.h>
 
 /**
@@ -54,32 +53,33 @@ void op_s(va_list form)
 void print_all(const char * const format, ...)
 {
 	va_list args;
-	unsigned int i;
+	unsigned int i = 0;
 	char *separator = "";
-	f ops[] = {
-		{"c", op_c},
-		{"i", op_i},
-		{"f", op_f},
-		{"s", op_s},
-	};
+	void (*fptr)(va_list);
 
 	va_start(args, format);
 
-	for (i = 0; format && format[i]; i++)
+	while (format && format[i])
 	{
-		unsigned int j = 0;
-
-		while (j < sizeof(ops) / sizeof(ops[0]))
+		if (format[i] == 'c')
+			fptr = op_c;
+		else if (format[i] == 'i')
+			fptr = op_i;
+		else if (format[i] == 'f')
+			fptr = op_f;
+		else if (format[i] == 's')
+			fptr = op_s;
+		else
 		{
-			if (ops[j].op[0] == format[i])
-			{
-				printf("%s", separator);
-				separator = ", ";
-				ops[j].f(args);
-				break;
-			}
-			j++;
+			i++;
+			continue;
 		}
+
+		printf("%s", separator);
+		separator = ", ";
+
+		fptr(args);
+		i++;
 	}
 
 	printf("\n");
