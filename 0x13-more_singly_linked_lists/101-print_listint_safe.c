@@ -6,7 +6,7 @@
  * print_listint_safe - prints a listint_t linked list
  * @head: pointer to the head of the list
  *
- * Returns: the number of nodes in the list
+ * Return: the number of nodes in the list
  *
  * This function can print lists with a loop
  * You should go through the list only once
