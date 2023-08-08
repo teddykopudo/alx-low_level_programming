@@ -4,14 +4,13 @@
  * read_textfile - Read a text file and print its content to standard output
  * @filename: Name of the text file
  * @letters: Number of letters to read and print
- * Return: actual number of letters read and printed, or 0 on error
+ * Return: The actual number of letters read and printed, or 0 on error
  */
 ssize_t read_textfile(const char *filename, size_t letters)
 {
 	int file;
-	ssize_t letters2 = 0;
+	ssize_t letters2 = 0, bytes_written = 0;
 	char *buff;
-	ssize_t written_bytes;
 
 	if (!filename)
 		return (0);
@@ -28,19 +27,23 @@ ssize_t read_textfile(const char *filename, size_t letters)
 	}
 
 	letters2 = read(file, buff, letters);
-	close(file);
-
 	if (letters2 == -1)
 	{
 		free(buff);
+		close(file);
 		return (0);
 	}
 
-	written_bytes = write(STDOUT_FILENO, buff, letters2);
-	free(buff);
-
-	if (written_bytes == -1 || (size_t)written_bytes != (size_t)letters2)
+	bytes_written = write(STDOUT_FILENO, buff, letters2);
+	if (bytes_written == -1 || (size_t)bytes_written != (size_t)letters2)
+	{
+		free(buff);
+		close(file);
 		return (0);
+	}
 
-	return (written_bytes);
+	free(buff);
+	close(file);
+
+	return (bytes_written);
 }
