@@ -4,46 +4,49 @@
  * read_textfile - Read a text file and print its content to standard output
  * @filename: Name of the text file
  * @letters: Number of letters to read and print
- * Return: The actual number of letters read and printed, or 0 on error
+ * Return: actual number of letters read and printed, or 0 on error
  */
+
 ssize_t read_textfile(const char *filename, size_t letters)
 {
-	int file;
-	ssize_t letters2 = 0, bytes_written = 0;
-	char *buff;
+	FILE *fp;
+	char *buffer;
+	ssize_t read_bytes, written_bytes;
 
 	if (!filename)
 		return (0);
 
-	buff = malloc(letters);
-	if (!buff)
+	buffer = malloc(letters + 1);
+	if (!buffer)
 		return (0);
 
-	file = open(filename, O_RDONLY);
-	if (file == -1)
+	fp = fopen(filename, "r");
+	if (!fp)
 	{
-		free(buff);
+		free(buffer);
 		return (0);
 	}
 
-	letters2 = read(file, buff, letters);
-	if (letters2 == -1)
+	read_bytes = fread(buffer, 1, letters, fp);
+	if (read_bytes == 0)
 	{
-		free(buff);
-		close(file);
+		fclose(fp);
+		free(buffer);
 		return (0);
 	}
 
-	bytes_written = write(STDOUT_FILENO, buff, letters2);
-	if (bytes_written == -1 || (size_t)bytes_written != (size_t)letters2)
+	buffer[read_bytes] = '\0';
+
+	written_bytes = write(STDOUT_FILENO, buffer, read_bytes);
+	if (written_bytes != read_bytes)
 	{
-		free(buff);
-		close(file);
+		fclose(fp);
+		free(buffer);
 		return (0);
 	}
 
-	free(buff);
-	close(file);
+	fclose(fp);
+	free(buffer);
 
-	return (bytes_written);
+	return (read_bytes);
 }
